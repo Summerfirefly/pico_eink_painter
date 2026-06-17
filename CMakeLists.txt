@@ -33,11 +33,15 @@ project(eink_photo C CXX ASM)
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
+add_subdirectory(lib/epaper_driver)
+
+aux_source_directory(dev_config dev_config_src)
+
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(eink_photo eink_photo.c
-    lib/DEV_Config.c
-    lib/EPD_4in0e.c
+add_executable(eink_photo
+    eink_photo.c
+    ${dev_config_src}
 )
 
 pico_set_program_name(eink_photo "eink_photo")
@@ -45,16 +49,17 @@ pico_set_program_version(eink_photo "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(eink_photo 0)
-pico_enable_stdio_usb(eink_photo 0)
+pico_enable_stdio_usb(eink_photo 1)
 
 # Add the standard library to the build
 target_link_libraries(eink_photo
-        pico_stdlib)
+    pico_stdlib
+    epaper_driver)
 
 # Add the standard include files to the build
 target_include_directories(eink_photo PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}
-        ${CMAKE_CURRENT_LIST_DIR}/lib/include
+    ${CMAKE_CURRENT_LIST_DIR}
+    ${CMAKE_CURRENT_LIST_DIR}/lib/epaper_driver/include
 )
 
 pico_add_extra_outputs(eink_photo)
