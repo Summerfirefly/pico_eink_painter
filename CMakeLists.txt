@@ -59,7 +59,6 @@ target_link_libraries(eink_photo
 # Add the standard include files to the build
 target_include_directories(eink_photo PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}
-    ${CMAKE_CURRENT_LIST_DIR}/lib/epaper_driver/include
 )
 
 pico_add_extra_outputs(eink_photo)
