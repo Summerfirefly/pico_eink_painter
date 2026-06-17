@@ -34,6 +34,7 @@ project(eink_photo C CXX ASM)
 pico_sdk_init()
 
 add_subdirectory(lib/epaper_driver)
+add_subdirectory(lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src)
 
 aux_source_directory(dev_config dev_config_src)
 
@@ -41,6 +42,7 @@ aux_source_directory(dev_config dev_config_src)
 
 add_executable(eink_photo
     eink_photo.c
+    demo/demo_func.c
     ${dev_config_src}
 )
 
@@ -54,7 +56,8 @@ pico_enable_stdio_usb(eink_photo 1)
 # Add the standard library to the build
 target_link_libraries(eink_photo
     pico_stdlib
-    epaper_driver)
+    epaper_driver
+    no-OS-FatFS-SD-SDIO-SPI-RPi-Pico)
 
 # Add the standard include files to the build
 target_include_directories(eink_photo PRIVATE
