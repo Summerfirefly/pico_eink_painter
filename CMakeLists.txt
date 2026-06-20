@@ -37,12 +37,13 @@ add_subdirectory(lib/epaper_driver)
 add_subdirectory(lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src)
 
 aux_source_directory(dev_config dev_config_src)
+aux_source_directory(src eink_photo_src)
 
 # Add executable. Default name is the project name, version 0.1
 
 add_executable(eink_photo
-    eink_photo.c
-    demo/demo_func.c
+    main.c
+    ${eink_photo_src}
     ${dev_config_src}
 )
 
@@ -55,6 +56,7 @@ pico_enable_stdio_usb(eink_photo 1)
 
 # Add the standard library to the build
 target_link_libraries(eink_photo
+    pico_rand
     pico_stdlib
     epaper_driver
     no-OS-FatFS-SD-SDIO-SPI-RPi-Pico)
@@ -62,6 +64,7 @@ target_link_libraries(eink_photo
 # Add the standard include files to the build
 target_include_directories(eink_photo PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}
+    ${CMAKE_CURRENT_LIST_DIR}/src/include
 )
 
 pico_add_extra_outputs(eink_photo)

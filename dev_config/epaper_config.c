@@ -77,36 +77,6 @@ void DEV_Delay_ms(UDOUBLE xms) {
     sleep_ms(xms);
 }
 
-void DEV_GPIO_Init(void) {
-    EPD_RST_PIN     = 17;
-    EPD_DC_PIN      = 25;
-    EPD_CS_PIN      = 8;
-    EPD_PWR_PIN     = 18;
-    EPD_BUSY_PIN    = 24;
-    EPD_MOSI_PIN    = 11;
-    EPD_SCLK_PIN    = 10;
-
-    gpio_init(EPD_BUSY_PIN);
-    gpio_init(EPD_RST_PIN);
-    gpio_init(EPD_DC_PIN);
-    gpio_init(EPD_CS_PIN);
-    gpio_init(EPD_PWR_PIN);
-    gpio_init(EPD_MOSI_PIN);
-    gpio_init(EPD_SCLK_PIN);
-
-    DEV_GPIO_Mode(EPD_BUSY_PIN, 0);
-    DEV_GPIO_Mode(EPD_RST_PIN, 1);
-    DEV_GPIO_Mode(EPD_DC_PIN, 1);
-    DEV_GPIO_Mode(EPD_CS_PIN, 1);
-    DEV_GPIO_Mode(EPD_PWR_PIN, 1);
-    // DEV_GPIO_Mode(EPD_MOSI_PIN, 0);
-    DEV_GPIO_Mode(EPD_SCLK_PIN, 1);
-
-    DEV_Digital_Write(EPD_CS_PIN, 1);
-    DEV_Digital_Write(EPD_PWR_PIN, 1);
-
-}
-
 void DEV_SPI_SendData(UBYTE Reg) {
     UBYTE i, j = Reg;
     DEV_GPIO_Mode(EPD_MOSI_PIN, 1);

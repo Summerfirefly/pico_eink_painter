@@ -13,6 +13,9 @@
 * | Info        :
 * 1.Remove:
 *   Unused headers
+* 2.Add:
+*   Some function to support partial image data send. This is useful when load
+*   image data with multiple read
 * -----------------------------------------------------------------------------
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -230,47 +233,6 @@ void EPD_4IN0E_Show7Block(void)
     EPD_4IN0E_TurnOnDisplay();
 }
 
-void EPD_4IN0E_Show(void)
-{
-    unsigned long k,o;
-    unsigned char const Color_seven[6] =
-    {EPD_4IN0E_BLACK, EPD_4IN0E_YELLOW, EPD_4IN0E_RED, EPD_4IN0E_BLUE, EPD_4IN0E_GREEN, EPD_4IN0E_WHITE};
-
-    UWORD Width, Height;
-    Width = (EPD_4IN0E_WIDTH % 2 == 0)? (EPD_4IN0E_WIDTH / 2 ): (EPD_4IN0E_WIDTH / 2 + 1);
-    Height = EPD_4IN0E_HEIGHT;
-    k = 0;
-    o = 0;
-
-    EPD_4IN0E_SendCommand(0x10);
-    for (UWORD j = 0; j < Height; j++) {
-        if((j > 10) && (j<50))
-        for (UWORD i = 0; i < Width; i++) {
-                EPD_4IN0E_SendData((Color_seven[0]<<4) |Color_seven[0]);
-            }
-        else if(o < Height/2)
-        for (UWORD i = 0; i < Width; i++) {
-                EPD_4IN0E_SendData((Color_seven[0]<<4) |Color_seven[0]);
-            }
-
-        else
-        {
-            for (UWORD i = 0; i < Width; i++) {
-                EPD_4IN0E_SendData((Color_seven[k]<<4) |Color_seven[k]);
-
-            }
-            k++ ;
-            if(k >= 6)
-                k = 0;
-        }
-
-        o++ ;
-        if(o >= Height)
-            o = 0;
-    }
-    EPD_4IN0E_TurnOnDisplay();
-}
-
 /******************************************************************************
 function :  Sends the image buffer in RAM to e-Paper and displays
 parameter:
@@ -299,4 +261,21 @@ void EPD_4IN0E_Sleep(void)
     EPD_4IN0E_SendCommand(0x07); // DEEP_SLEEP
     EPD_4IN0E_SendData(0XA5);
     // EPD_4IN0E_ReadBusyH();
+}
+
+void EPD_4IN0E_StartImageSend(void)
+{
+    EPD_4IN0E_SendCommand(0x10);
+}
+
+void EPD_4IN0E_SendImageData(UBYTE *image, UDOUBLE size)
+{
+    for (UDOUBLE i = 0; i < size; ++i) {
+        EPD_4IN0E_SendData(image[i]);
+    }
+}
+
+void EPD_4IN0E_EndImageSend(void)
+{
+    EPD_4IN0E_TurnOnDisplay();
 }

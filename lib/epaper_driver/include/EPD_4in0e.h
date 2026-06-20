@@ -50,8 +50,11 @@ Color Index
 void EPD_4IN0E_Init(void);
 void EPD_4IN0E_Clear(UBYTE color);
 void EPD_4IN0E_Show7Block(void);
-void EPD_4IN0E_Show(void);
 void EPD_4IN0E_Display(UBYTE *Image);
 void EPD_4IN0E_Sleep(void);
+
+void EPD_4IN0E_StartImageSend(void);
+void EPD_4IN0E_SendImageData(UBYTE *image, UDOUBLE size);
+void EPD_4IN0E_EndImageSend(void);
 
 #endif

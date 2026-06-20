@@ -2,13 +2,10 @@
 
 #include <pico/time.h>
 #include <stdio.h>
-#include "DEV_Config.h"
 #include "EPD_4in0e.h"
 #include "ff.h"
 
 void demo_epaper(void) {
-    DEV_GPIO_Init();
-
     EPD_4IN0E_Init();
     EPD_4IN0E_Show7Block();
     EPD_4IN0E_Sleep();
