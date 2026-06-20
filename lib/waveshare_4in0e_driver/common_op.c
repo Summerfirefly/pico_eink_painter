@@ -36,21 +36,11 @@
 # THE SOFTWARE.
 #
 ******************************************************************************/
-#include "DEV_Config.h"
+#include "common_op.h"
 
 #include <hardware/gpio.h>
 #include <pico/time.h>
-
-/**
- * GPIO
-**/
-int EPD_RST_PIN;
-int EPD_DC_PIN;
-int EPD_CS_PIN;
-int EPD_BUSY_PIN;
-int EPD_PWR_PIN;
-int EPD_MOSI_PIN;
-int EPD_SCLK_PIN;
+#include "defines.h"
 
 /**
  * GPIO read and write
@@ -77,48 +67,25 @@ void DEV_Delay_ms(UDOUBLE xms) {
     sleep_ms(xms);
 }
 
-void DEV_SPI_SendData(UBYTE Reg) {
-    UBYTE i, j = Reg;
-    DEV_GPIO_Mode(EPD_MOSI_PIN, 1);
-    DEV_Digital_Write(EPD_CS_PIN, 0);
-    for (i = 0; i < 8; i++)
-    {
-        DEV_Digital_Write(EPD_SCLK_PIN, 0);
-        if (j & 0x80)
-        {
-            DEV_Digital_Write(EPD_MOSI_PIN, 1);
-        }
-        else
-        {
-            DEV_Digital_Write(EPD_MOSI_PIN, 0);
-        }
+UBYTE DEV_Module_Init(void)
+{
+    gpio_init(EPD_BUSY_PIN);
+    gpio_init(EPD_RST_PIN);
+    gpio_init(EPD_DC_PIN);
+    gpio_init(EPD_CS_PIN);
+    gpio_init(EPD_PWR_PIN);
+    gpio_init(EPD_MOSI_PIN);
+    gpio_init(EPD_CLK_PIN);
 
-        DEV_Digital_Write(EPD_SCLK_PIN, 1);
-        j = j << 1;
-    }
-    DEV_Digital_Write(EPD_SCLK_PIN, 0);
-    DEV_Digital_Write(EPD_CS_PIN, 1);
-}
+    gpio_set_dir(EPD_BUSY_PIN, false);
+    gpio_set_dir(EPD_RST_PIN, true);
+    gpio_set_dir(EPD_DC_PIN, true);
+    gpio_set_dir(EPD_CS_PIN, true);
+    gpio_set_dir(EPD_PWR_PIN, true);
+    gpio_set_dir(EPD_CLK_PIN, true);
 
-UBYTE DEV_SPI_ReadData() {
-    UBYTE i, j = 0xff;
-    DEV_GPIO_Mode(EPD_MOSI_PIN, 0);
-    DEV_Digital_Write(EPD_CS_PIN, 0);
-    for (i = 0; i < 8; i++)
-    {
-        DEV_Digital_Write(EPD_SCLK_PIN, 0);
-        j = j << 1;
-        if (DEV_Digital_Read(EPD_MOSI_PIN))
-        {
-                j = j | 0x01;
-        }
-        else
-        {
-                j= j & 0xfe;
-        }
-        DEV_Digital_Write(EPD_SCLK_PIN, 1);
-    }
-    DEV_Digital_Write(EPD_SCLK_PIN, 0);
-    DEV_Digital_Write(EPD_CS_PIN, 1);
-    return j;
+    gpio_put(EPD_CS_PIN, true);
+    gpio_put(EPD_PWR_PIN, true);
+
+	return 0;
 }

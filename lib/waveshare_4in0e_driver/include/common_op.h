@@ -54,37 +54,19 @@
 # THE SOFTWARE.
 #
 ******************************************************************************/
-#ifndef _DEV_CONFIG_H_
-#define _DEV_CONFIG_H_
+#ifndef _COMMON_OP_H_
+#define _COMMON_OP_H_
 
-#include <stdint.h>
-
-/**
- * data
-**/
-#define UBYTE   uint8_t
-#define UWORD   uint16_t
-#define UDOUBLE uint32_t
-
-/**
- * GPIOI config
-**/
-extern int EPD_RST_PIN;
-extern int EPD_DC_PIN;
-extern int EPD_CS_PIN;
-extern int EPD_BUSY_PIN;
-extern int EPD_PWR_PIN;
-extern int EPD_MOSI_PIN;
-extern int EPD_SCLK_PIN;
+#include "defines.h"
 
 /*------------------------------------------------------------------------------------------------------*/
 void DEV_Digital_Write(UWORD Pin, UBYTE Value);
 UBYTE DEV_Digital_Read(UWORD Pin);
 
+void DEV_GPIO_Mode(UWORD Pin, UWORD Mode);
+
 void DEV_Delay_ms(UDOUBLE xms);
 
-void DEV_SPI_SendData(UBYTE Reg);
-UBYTE DEV_SPI_ReadData();
+UBYTE DEV_Module_Init(void);
 
-
-#endif
+#endif // _COMMON_OP_H_

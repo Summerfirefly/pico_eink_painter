@@ -1,17 +1,19 @@
 #include <hardware/spi.h>
 #include <hw_config.h>
 
+#include "defines.h"
+
 static spi_t spi = {
-    .hw_inst = spi1,
+    .hw_inst = SD_SPI_PORT,
     .baud_rate = 125 * 1000 * 1000 / 4,
-    .sck_gpio = 30,
-    .mosi_gpio = 31,
-    .miso_gpio = 40
+    .sck_gpio = SD_CLK_PIN,
+    .mosi_gpio = SD_MOSI_PIN,
+    .miso_gpio = SD_MISO_PIN
 };
 
 static sd_spi_if_t sd_spi_if = {
     .spi = &spi,
-    .ss_gpio = 43
+    .ss_gpio = SD_CS_PIN
 };
 
 static sd_card_t sd_card = {

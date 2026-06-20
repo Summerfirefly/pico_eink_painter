@@ -33,10 +33,12 @@ project(eink_photo C CXX ASM)
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
-add_subdirectory(lib/epaper_driver)
+set(TARGET_DEVICE waveshare_4in0e_driver)
+#set(TARGET_DEVICE waveshare_rp2350_photo_painter)
+
+add_subdirectory(lib/${TARGET_DEVICE})
 add_subdirectory(lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src)
 
-aux_source_directory(dev_config dev_config_src)
 aux_source_directory(src eink_photo_src)
 
 # Add executable. Default name is the project name, version 0.1
@@ -44,7 +46,6 @@ aux_source_directory(src eink_photo_src)
 add_executable(eink_photo
     main.c
     ${eink_photo_src}
-    ${dev_config_src}
 )
 
 pico_set_program_name(eink_photo "eink_photo")
@@ -58,7 +59,7 @@ pico_enable_stdio_usb(eink_photo 1)
 target_link_libraries(eink_photo
     pico_rand
     pico_stdlib
-    epaper_driver
+    ${TARGET_DEVICE}
     no-OS-FatFS-SD-SDIO-SPI-RPi-Pico)
 
 # Add the standard include files to the build

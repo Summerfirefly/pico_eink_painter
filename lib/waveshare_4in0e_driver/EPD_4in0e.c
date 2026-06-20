@@ -38,7 +38,53 @@
 #
 ******************************************************************************/
 #include "EPD_4in0e.h"
-#include "DEV_Config.h"
+#include "common_op.h"
+
+static void EPD_SPI_SendData(UBYTE Reg) {
+    UBYTE i, j = Reg;
+    DEV_GPIO_Mode(EPD_MOSI_PIN, 1);
+    DEV_Digital_Write(EPD_CS_PIN, 0);
+    for (i = 0; i < 8; i++)
+    {
+        DEV_Digital_Write(EPD_CLK_PIN, 0);
+        if (j & 0x80)
+        {
+            DEV_Digital_Write(EPD_MOSI_PIN, 1);
+        }
+        else
+        {
+            DEV_Digital_Write(EPD_MOSI_PIN, 0);
+        }
+
+        DEV_Digital_Write(EPD_CLK_PIN, 1);
+        j = j << 1;
+    }
+    DEV_Digital_Write(EPD_CLK_PIN, 0);
+    DEV_Digital_Write(EPD_CS_PIN, 1);
+}
+
+static UBYTE EPD_SPI_ReadData() {
+    UBYTE i, j = 0xff;
+    DEV_GPIO_Mode(EPD_MOSI_PIN, 0);
+    DEV_Digital_Write(EPD_CS_PIN, 0);
+    for (i = 0; i < 8; i++)
+    {
+        DEV_Digital_Write(EPD_CLK_PIN, 0);
+        j = j << 1;
+        if (DEV_Digital_Read(EPD_MOSI_PIN))
+        {
+                j = j | 0x01;
+        }
+        else
+        {
+                j= j & 0xfe;
+        }
+        DEV_Digital_Write(EPD_CLK_PIN, 1);
+    }
+    DEV_Digital_Write(EPD_CLK_PIN, 0);
+    DEV_Digital_Write(EPD_CS_PIN, 1);
+    return j;
+}
 
 /******************************************************************************
 function :  Software reset
@@ -63,7 +109,7 @@ static void EPD_4IN0E_SendCommand(UBYTE Reg)
 {
     DEV_Digital_Write(EPD_DC_PIN, 0);
     DEV_Digital_Write(EPD_CS_PIN, 0);
-    DEV_SPI_SendData(Reg);
+    EPD_SPI_SendData(Reg);
     DEV_Digital_Write(EPD_CS_PIN, 1);
 }
 
@@ -76,7 +122,7 @@ static void EPD_4IN0E_SendData(UBYTE Data)
 {
     DEV_Digital_Write(EPD_DC_PIN, 1);
     DEV_Digital_Write(EPD_CS_PIN, 0);
-    DEV_SPI_SendData(Data);
+    EPD_SPI_SendData(Data);
     DEV_Digital_Write(EPD_CS_PIN, 1);
 }
 
