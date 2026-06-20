@@ -1,11 +1,11 @@
 /*****************************************************************************
-* | File        :   EPD_4in0e.h
+* | File        :   EPD_7in3e.h
 * | Author      :   Waveshare team
-* | Function    :   4inch e-Paper (E) Driver
+* | Function    :   7.3inch e-Paper (F) Driver
 * | Info        :
 *----------------
 * | This version:   V1.0
-* | Date        :   2024-08-20
+* | Date        :   2022-10-20
 * | Info        :
 * -----------------------------------------------------------------------------
 #
@@ -28,33 +28,35 @@
 # THE SOFTWARE.
 #
 ******************************************************************************/
-#ifndef __EPD_4IN0E_H_
-#define __EPD_4IN0E_H_
+#ifndef __EPD_H_
+#define __EPD_H_
 
 #include "defines.h"
 
 // Display resolution
-#define EPD_4IN0E_WIDTH       400
-#define EPD_4IN0E_HEIGHT      600
+#define EPD_WIDTH       800
+#define EPD_HEIGHT      480
 
 /**********************************
 Color Index
 **********************************/
-#define EPD_4IN0E_BLACK   0x0   /// 000
-#define EPD_4IN0E_WHITE   0x1   /// 001
-#define EPD_4IN0E_YELLOW  0x2   /// 010
-#define EPD_4IN0E_RED     0x3   /// 011
-#define EPD_4IN0E_BLUE    0x5   /// 101
-#define EPD_4IN0E_GREEN   0x6   /// 110
+#define EPD_BLACK   0x0   /// 000
+#define EPD_WHITE   0x1   /// 001
+#define EPD_YELLOW  0x2   /// 010
+#define EPD_RED     0x3   /// 011
+// #define EPD_ORANGE  0x4   /// 100
+#define EPD_BLUE    0x5   /// 101
+#define EPD_GREEN   0x6   /// 110
 
-void EPD_4IN0E_Init(void);
-void EPD_4IN0E_Clear(UBYTE color);
-void EPD_4IN0E_Show7Block(void);
-void EPD_4IN0E_Display(UBYTE *Image);
-void EPD_4IN0E_Sleep(void);
+void EPD_Init(void);
+void EPD_Init_Fast(void);
+void EPD_Clear(UBYTE color);
+void EPD_Show7Block(void);
+void EPD_Display(UBYTE *Image);
+void EPD_Sleep(void);
 
-void EPD_4IN0E_StartImageSend(void);
-void EPD_4IN0E_SendImageData(UBYTE *image, UDOUBLE size);
-void EPD_4IN0E_EndImageSend(void);
+void EPD_StartImageSend(void);
+void EPD_SendImageData(UBYTE *image, UDOUBLE size);
+void EPD_EndImageSend(void);
 
 #endif

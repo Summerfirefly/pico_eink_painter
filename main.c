@@ -1,9 +1,9 @@
-#include "EPD_4in0e.h"
-#include "eink_photo.h"
-#include "eink_photo_init.h"
 #include <pico/stdio.h>
 #include <pico/time.h>
 #include <stdio.h>
+#include "eink_photo.h"
+#include "eink_photo_init.h"
+#include "epd.h"
 
 int main() {
     stdio_init_all();
@@ -20,9 +20,9 @@ int main() {
             printf("Failed to add timer to auto change photo\n");
         }
     } else {
-        EPD_4IN0E_Init();
-        EPD_4IN0E_Clear(EPD_4IN0E_WHITE);
-        EPD_4IN0E_Sleep();
+        EPD_Init();
+        EPD_Clear(EPD_WHITE);
+        EPD_Sleep();
     }
 
     int i = 0;

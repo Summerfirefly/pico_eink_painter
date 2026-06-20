@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "EPD_4in0e.h"
+#include "epd.h"
 #include "ff.h"
 #include "ffconf.h"
 
@@ -61,10 +61,10 @@ void show_photo(void) {
         if (f_open(&file, picked_photo, FA_READ) != FR_OK) {
             printf("Failed to open file: %s\n", picked_photo);
         } else {
-            uint8_t buffer[EPD_4IN0E_WIDTH * 50];
+            uint8_t buffer[EPD_WIDTH * 50];
             UINT read_bytes, total_read = 0;
-            EPD_4IN0E_Init();
-            EPD_4IN0E_StartImageSend();
+            EPD_Init();
+            EPD_StartImageSend();
             do {
                 read_bytes = 0;
                 if (f_read(&file, buffer, sizeof(buffer), &read_bytes) != FR_OK) {
@@ -72,13 +72,13 @@ void show_photo(void) {
                     break;
                 } else {
                     total_read += read_bytes;
-                    EPD_4IN0E_SendImageData(buffer, read_bytes);
+                    EPD_SendImageData(buffer, read_bytes);
                 }
             } while (read_bytes == sizeof(buffer));
 
             f_close(&file);
-            EPD_4IN0E_EndImageSend();
-            EPD_4IN0E_Sleep();
+            EPD_EndImageSend();
+            EPD_Sleep();
         }
     }
 }

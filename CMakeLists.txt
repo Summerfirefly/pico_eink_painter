@@ -33,8 +33,8 @@ project(eink_photo C CXX ASM)
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
-set(TARGET_DEVICE waveshare_4in0e_driver)
-#set(TARGET_DEVICE waveshare_rp2350_photo_painter)
+#set(TARGET_DEVICE waveshare_4in0e_driver)
+set(TARGET_DEVICE waveshare_rp2350_photo_painter)
 
 add_subdirectory(lib/${TARGET_DEVICE})
 add_subdirectory(lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src)
