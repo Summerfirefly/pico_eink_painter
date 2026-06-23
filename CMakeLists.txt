@@ -6,42 +6,31 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Initialise pico_sdk from installed location
-# (note this can come from environment, CMake cache etc)
-
-# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
 if(WIN32)
     set(USERHOME $ENV{USERPROFILE})
 else()
     set(USERHOME $ENV{HOME})
 endif()
-set(sdkVersion 2.2.0)
-set(toolchainVersion 14_2_Rel1)
-set(picotoolVersion 2.2.0-a4)
-set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
-if (EXISTS ${picoVscode})
-    include(${picoVscode})
-endif()
-# ====================================================================================
+
 set(PICO_BOARD pico2 CACHE STRING "Board type")
+set(PICO_SDK_PATH ${USERHOME}/.pico-sdk/sdk)
+set(picotool_DIR ${USERHOME}/.pico-sdk/picotool)
 
 # Pull in Raspberry Pi Pico SDK (must be before project)
-include(${USERHOME}/.pico-sdk/sdk/${sdkVersion}/external/pico_sdk_import.cmake)
+include(${PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
 project(eink_photo C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
-#set(TARGET_DEVICE waveshare_4in0e_driver)
-set(TARGET_DEVICE waveshare_rp2350_photo_painter)
+set(TARGET_DEVICE waveshare_4in0e_driver)
+#set(TARGET_DEVICE waveshare_rp2350_photo_painter)
 
 add_subdirectory(lib/${TARGET_DEVICE})
 add_subdirectory(lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src)
 
 aux_source_directory(src eink_photo_src)
-
-# Add executable. Default name is the project name, version 0.1
 
 add_executable(eink_photo
     main.c
