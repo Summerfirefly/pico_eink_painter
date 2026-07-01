@@ -14,7 +14,8 @@ endif()
 
 set(PICO_BOARD pico2 CACHE STRING "Board type")
 set(PICO_SDK_PATH ${USERHOME}/.pico-sdk/sdk)
-set(picotool_DIR ${USERHOME}/.pico-sdk/picotool)
+set(picotool_DIR ${PICO_SDK_PATH}/../picotool)
+set(pioasm_DIR ${PICO_SDK_PATH}/../pioasm)
 
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(${PICO_SDK_PATH}/external/pico_sdk_import.cmake)
